@@ -18,3 +18,4 @@ On the server side, if the score is higher than the current one in the database,
 
 Then, in another page, websiteurl.com/leaderboards there will be a table of all users and their scores, sorted by
 the highest scored
+Done!
