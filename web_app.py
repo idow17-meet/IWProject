@@ -13,6 +13,7 @@ dbsession = DBSession()
 
 from flask_oauth import OAuth
 import json
+import hashlib
 
 #SECRET
 #Client id: 606083212870-invusvesj5a2khknk813hrupq27h35k6.apps.googleusercontent.com 
@@ -44,6 +45,10 @@ def sort_leaderboards(scores):
 		for i in range(j):
 			if (scores[i].score < scores[i + 1].score):
 				scores[i], scores[i + 1] = scores[i + 1], scores[i]
+
+
+def md5hash(string):
+	return hashlib.md5(string).hexdigest()
 
 
 @app.route('/')
@@ -119,11 +124,16 @@ def get_highscore():
 	return str(score.score)
 
 
-@app.route('/Submit-highscore', methods=['POST'])
+@app.route('/Submit-highscore', methods=['GET'])
 def submit_highscore():
-	user_score = dbsession.query(ScoreInfo).filter_by(userid=session['user_id']).first()
-	if request.form['score'] > user_score.score:
-		user_score.score = request.form['score']
+	name = request.args.get('name')
+	score = request.args.get('score')
+	sent_hash = request.args.get('hash')
+
+	user_score = dbsession.query(ScoreInfo).filter_by(name=name).first()
+	secret_hash = md5hash(name + score + secret_key)
+	if request.args.get('score') > user_score.score and sent_hash == secret_hash:
+		user_score.score = score
 		dbsession.commit()
 	return "gud"
 
