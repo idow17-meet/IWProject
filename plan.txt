@@ -1,0 +1,20 @@
+The following is the plan for how the game will send and receive highscores from the database.
+
+The server will have a database which consists of a person's google id (ex: 3213123231111285) and his highscore (ex: 2)
+Done!
+
+When you start the game (load flappy_moshe.html) it will use WWW (or a javascript get request, need to check)
+at websiteurl.com/highscores/userid and then save that highscore into playerPrefs.highscore.
+ID (users google id) will be received from a javascript script which will fetch the logged in user's id
+(note: probably gonna go with www)
+
+Idea: websiteurl.com/getcurrentid will return current user's google id (which is how fetching highscore will work)
+Done!
+
+When you lose (or when you switch page, need to check when exactly) if the new score is the higher than highscore
+Unity will call WWW (maybe with a WWWForm, or maybe just secured get request)
+on websiteurl.com/submit-highscore with the user id and score
+On the server side, if the score is higher than the current one in the database, it will save it.
+
+Then, in another page, websiteurl.com/leaderboards there will be a table of all users and their scores, sorted by
+the highest scored

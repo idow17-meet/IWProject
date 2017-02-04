@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Leaderboards - {% endblock %}
+{% block body %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for score in scores %}
+			<tr>
+				<td><h4>{{ score.name }}</h4></td>
+				<td><h4>{{ score.score }}</h4></td>
+			</tr>
+				<br>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
