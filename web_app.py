@@ -125,6 +125,7 @@ def submit_highscore():
 	if request.form['score'] > user_score.score:
 		user_score.score = request.form['score']
 		dbsession.commit()
+	return "gud"
 
 
 # Games:
