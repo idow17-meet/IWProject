@@ -118,6 +118,15 @@ def get_highscore():
 	score = dbsession.query(ScoreInfo).filter_by(userid=user_id).first()
 	return str(score.score)
 
+
+@app.route('/Submit-highscore', methods=['POST'])
+def submit_highscore():
+	user_score = dbsession.query(ScoreInfo).filter_by(userid=session['user_id']).first()
+	if request.form['score'] > user_score.score:
+		user_score.score = request.form['score']
+		dbsession.commit()
+
+
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
