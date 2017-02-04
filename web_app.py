@@ -84,9 +84,8 @@ def login():
  
 @app.route('/logout')
 def logout():
-	if not (session.get('access_token', None) is None):
-		session.pop('access_token')
-	return redirect(url_for('login'))
+	session.pop('access_token')
+	return redirect(url_for('index'))
  
  
 @app.route(REDIRECT_URI)
