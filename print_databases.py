@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     db_file_name = sys.argv[1]
 
-    engine = create_engine('sqlite:///%s' % db_file_name)
+    engine = create_engine('postgres://ypzrrkyierbkoi:53a476cc2773a0be0e816cace4d8c147a717c7c10cfb0febacc07bd4cd64c669@ec2-46-137-117-43.eu-west-1.compute.amazonaws.com:5432/d8k8vk9ob3vb7o')
 
     metadata = MetaData(engine)
 

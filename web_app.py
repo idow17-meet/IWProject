@@ -78,7 +78,8 @@ def index():
 	email = json.loads(jsonstring)['email']
 	photo = json.loads(jsonstring)['picture']
 	session['json'] = jsonstring
-	session['user_id'] = json.loads(jsonstring)['id']
+	session['user_email'] = email
+	print(json.loads(jsonstring)['id'])
 	return render_template('main.html', name=name, email=email, photourl=photo)
  
  
@@ -142,7 +143,8 @@ def submit_highscore():
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
-	return render_template('flappy_moshe.html', userid=session['user_id'])
+	print("NOTICENOTICENOTICENOTICE: " + session['user_email'])
+	return render_template('flappy_moshe.html', user_email=json.loads(session['json'])['id'])#session['user_id'])
 if __name__ == '__main__':
 	app.run(debug=True, threaded=True)
 
