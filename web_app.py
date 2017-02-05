@@ -27,16 +27,16 @@ REDIRECT_URI = '/oauth2callback'
 oauth = OAuth()
 
 google = oauth.remote_app('google',
-                      base_url='https://www.google.com/accounts/',
-                      authorize_url='https://accounts.google.com/o/oauth2/auth',
-                      request_token_url=None,
-                      request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email',
-                                            'response_type': 'code'},
-                      access_token_url='https://accounts.google.com/o/oauth2/token',
-                      access_token_method='POST',
-                      access_token_params={'grant_type': 'authorization_code'},
-                      consumer_key=GOOGLE_CLIENT_ID,
-                      consumer_secret=GOOGLE_CLIENT_SECRET)
+					  base_url='https://www.google.com/accounts/',
+					  authorize_url='https://accounts.google.com/o/oauth2/auth',
+					  request_token_url=None,
+					  request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email',
+											'response_type': 'code'},
+					  access_token_url='https://accounts.google.com/o/oauth2/token',
+					  access_token_method='POST',
+					  access_token_params={'grant_type': 'authorization_code'},
+					  consumer_key=GOOGLE_CLIENT_ID,
+					  consumer_secret=GOOGLE_CLIENT_SECRET)
 
 def sort_leaderboards(scores):
 	# bubble sort but with leaderboards
@@ -54,38 +54,38 @@ def md5hash(string):
 @app.route('/')
 def index():
 
-    access_token = session.get('access_token')
-    if access_token is None:
-    	return redirect(url_for('login'))
+	access_token = session.get('access_token')
+	if access_token is None:
+		return redirect(url_for('login'))
  
-    access_token = access_token[0]
-    from urllib2 import Request, urlopen, URLError
+	access_token = access_token[0]
+	from urllib2 import Request, urlopen, URLError
  
-    headers = {'Authorization': 'OAuth '+access_token}
-    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
-                  None, headers)
-    try:
-        res = urlopen(req)
-    except URLError, e:
-        if e.code == 401:
-            # Unauthorized - bad token
-            session.pop('access_token', None)
-            return redirect(url_for('login'))
-        return res.read()
+	headers = {'Authorization': 'OAuth '+access_token}
+	req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
+				  None, headers)
+	try:
+		res = urlopen(req)
+	except URLError, e:
+		if e.code == 401:
+			# Unauthorized - bad token
+			session.pop('access_token', None)
+			return redirect(url_for('login'))
+		return res.read()
  
-    jsonstring = res.read()
-    name = json.loads(jsonstring)['name']
-    email = json.loads(jsonstring)['email']
-    photo = json.loads(jsonstring)['picture']
-    session['json'] = jsonstring
-    session['user_id'] = json.loads(jsonstring)['id']
-    return render_template('main.html', name=name, email=email, photourl=photo)
+	jsonstring = res.read()
+	name = json.loads(jsonstring)['name']
+	email = json.loads(jsonstring)['email']
+	photo = json.loads(jsonstring)['picture']
+	session['json'] = jsonstring
+	session['user_id'] = json.loads(jsonstring)['id']
+	return render_template('main.html', name=name, email=email, photourl=photo)
  
  
 @app.route('/login')
 def login():
-    callback=url_for('authorized', _external=True)
-    return google.authorize(callback=callback)
+	callback=url_for('authorized', _external=True)
+	return google.authorize(callback=callback)
  
 @app.route('/logout')
 def logout():
@@ -96,16 +96,16 @@ def logout():
 @app.route(REDIRECT_URI)
 @google.authorized_handler
 def authorized(resp):
-    access_token = resp['access_token']
-    session['access_token'] = access_token, ''
-    return redirect(url_for('index'))
+	access_token = resp['access_token']
+	session['access_token'] = access_token, ''
+	return redirect(url_for('index'))
  
  
 @google.tokengetter
 def get_access_token():
-    return session.get('access_token')
+	return session.get('access_token')
 
-    
+	
 
 @app.route('/Leaderboards')
 def leaderboards():
@@ -129,9 +129,10 @@ def submit_highscore():
 	name = request.args.get('name')
 	score = request.args.get('score')
 	sent_hash = request.args.get('hash')
+	print(score)
 
 	user_score = dbsession.query(ScoreInfo).filter_by(name=name).first()
-	secret_hash = md5hash(name + score + secret_key)
+	secret_hash = md5hash(name + score + app.secret_key)
 	if int(request.args.get('score')) > user_score.score and sent_hash == secret_hash:
 		user_score.score = score
 		dbsession.commit()
