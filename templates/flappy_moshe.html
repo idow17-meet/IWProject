@@ -30,6 +30,11 @@
   };
 </script>
 <script src="{{url_for('static', filename='Release/UnityLoader.js')}}"></script>
-
-  </body>
+<script type="text/javascript">
+  function OnFinishedLoading(){
+      var id = {{ userid }};
+      SendMessage("Player", "SetUserID", id);
+  }
+</script>
+</body>
 </html>

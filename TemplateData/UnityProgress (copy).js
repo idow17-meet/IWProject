@@ -26,13 +26,13 @@ function UnityProgress (dom) {
 
 	var logoImage = document.createElement("img");
 	var splashStyle = Module["splashStyle"] ? Module["splashStyle"] : "Light";
-	logoImage.src = "static/TemplateData/Logo." + splashStyle + ".png'"; 
+	logoImage.src = "{{ url_for('static', filename='TemplateData/Logo.') }}" + splashStyle + ".png"; 
 	logoImage.style.position = "absolute";
 	parent.appendChild(logoImage);
 	this.logoImage = logoImage;
 
 	var progressFrame = document.createElement("img");
-	progressFrame.src = "static/TemplateData/ProgressFrame." + splashStyle + ".png'"; 
+	progressFrame.src = "{{ url_for('static', filename='TemplateData/ProgressFrame.') }}" + splashStyle + ".png"; 
 	progressFrame.style.position = "absolute";
 	parent.appendChild(progressFrame);
 	this.progressFrame = progressFrame;
@@ -44,7 +44,7 @@ function UnityProgress (dom) {
 	this.progressBar = progressBar;
 
 	var progressBarImg = document.createElement("img");
-	progressBarImg.src = "static/TemplateData/ProgressBar." + splashStyle + ".png"; 
+	progressBarImg.src = "{{ url_for('static', filename='TemplateData/ProgressBar.') }}" + splashStyle + ".png"; 
 	progressBarImg.style.position = "absolute";
 	progressBar.appendChild(progressBarImg);
 	this.progressBarImg = progressBarImg;

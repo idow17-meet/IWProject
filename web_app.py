@@ -126,13 +126,13 @@ def get_highscore():
 
 @app.route('/Submit-highscore', methods=['GET'])
 def submit_highscore():
-	name = request.args.get('name')
+	userid = request.args.get('userid')
 	score = request.args.get('score')
 	sent_hash = request.args.get('hash')
 	print(score)
 
-	user_score = dbsession.query(ScoreInfo).filter_by(name=name).first()
-	secret_hash = md5hash(name + score + app.secret_key)
+	user_score = dbsession.query(ScoreInfo).filter_by(userid=userid).first()
+	secret_hash = md5hash(userid + score + app.secret_key)
 	if int(request.args.get('score')) > user_score.score and sent_hash == secret_hash:
 		user_score.score = score
 		dbsession.commit()
@@ -142,7 +142,7 @@ def submit_highscore():
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
-	return render_template('flappy_moshe.html')
+	return render_template('flappy_moshe.html', userid=session['user_id'])
 if __name__ == '__main__':
 	app.run(debug=True, threaded=True)
 
