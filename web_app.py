@@ -132,7 +132,7 @@ def submit_highscore():
 
 	user_score = dbsession.query(ScoreInfo).filter_by(name=name).first()
 	secret_hash = md5hash(name + score + secret_key)
-	if request.args.get('score') > user_score.score and sent_hash == secret_hash:
+	if int(request.args.get('score')) > user_score.score and sent_hash == secret_hash:
 		user_score.score = score
 		dbsession.commit()
 	return "gud"
