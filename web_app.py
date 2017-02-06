@@ -19,7 +19,8 @@ import hashlib
 #Client id: 606083212870-invusvesj5a2khknk813hrupq27h35k6.apps.googleusercontent.com 
 #client secret:  0Wbve1W1lOrRvoUquT4SFq2k 
 
-
+#My google id:
+#103891305576825217486
 GOOGLE_CLIENT_ID = '606083212870-invusvesj5a2khknk813hrupq27h35k6.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = '0Wbve1W1lOrRvoUquT4SFq2k'
 REDIRECT_URI = '/oauth2callback'
@@ -78,8 +79,13 @@ def index():
 	email = json.loads(jsonstring)['email']
 	photo = json.loads(jsonstring)['picture']
 	session['json'] = jsonstring
-	session['user_email'] = email
-	print(json.loads(jsonstring)['id'])
+	session['user_id'] = json.loads(jsonstring)['id']
+
+	user_score = dbsession.query(ScoreInfo).filter_by(userid=session['user_id']).first()
+	if user_score is None:
+		user_score = ScoreInfo(userid=session['user_id'], score=0, name=name)
+		dbsession.add(user_score)
+		dbsession.commit()
 	return render_template('main.html', name=name, email=email, photourl=photo)
  
  
@@ -115,13 +121,11 @@ def leaderboards():
 	return render_template('leaderboards.html', scores=scores)
 
 
-@app.route('/Get-highscore')
-def get_highscore():
-	user_id = session.get('user_id')
-	if user_id is None:
-		flash('You were redirected to the main page since you arent logged in.')
-		return redirect(url_for('index'))
+@app.route('/Get-highscore/<string:user_id>')
+def get_highscore(user_id):
 	score = dbsession.query(ScoreInfo).filter_by(userid=user_id).first()
+	if score is None:
+		return "-1"
 	return str(score.score)
 
 
@@ -130,7 +134,6 @@ def submit_highscore():
 	userid = request.args.get('userid')
 	score = request.args.get('score')
 	sent_hash = request.args.get('hash')
-	print(score)
 
 	user_score = dbsession.query(ScoreInfo).filter_by(userid=userid).first()
 	secret_hash = md5hash(userid + score + app.secret_key)
@@ -143,8 +146,7 @@ def submit_highscore():
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
-	print("NOTICENOTICENOTICENOTICE: " + session['user_email'])
-	return render_template('flappy_moshe.html', user_email=json.loads(session['json'])['id'])#session['user_id'])
+	return render_template('flappy_moshe.html', user_id=session['user_id'])#session['user_id'])
 if __name__ == '__main__':
 	app.run(debug=True, threaded=True)
 

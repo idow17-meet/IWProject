@@ -16,6 +16,12 @@ class ScoreInfo(Base):
 	name = Column(String)
 
 #engine = create_engine('sqlite:///project.db')
+# try:
+# 	a = os.system("ping google.com")
+# 	if (a == 512):
+# 		raise "eeerororororor"
+# 	engine = create_engine(os.environ["DATABASE_URL"])
+# except:
+# 	engine = create_engine("sqlite:///project.db")
 engine = create_engine(os.environ["DATABASE_URL"])
-# NOTE REPLACE THE LONG LINK WITH A [URL] VARIABLE LATER
 Base.metadata.create_all(engine)
