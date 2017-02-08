@@ -21,6 +21,9 @@ import hashlib
 
 #My google id:
 #103891305576825217486
+
+#Useful:
+#sudo lsof -i :5000 | grep "python" | cut -d " " -f3 | xargs kill -9
 GOOGLE_CLIENT_ID = '606083212870-invusvesj5a2khknk813hrupq27h35k6.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = '0Wbve1W1lOrRvoUquT4SFq2k'
 REDIRECT_URI = '/oauth2callback'
@@ -77,7 +80,7 @@ def index():
 	jsonstring = res.read()
 	name = json.loads(jsonstring)['name']
 	email = json.loads(jsonstring)['email']
-	photo = json.loads(jsonstring)['picture']
+	session['photo'] = json.loads(jsonstring)['picture']
 	session['json'] = jsonstring
 	session['user_id'] = json.loads(jsonstring)['id']
 
@@ -86,7 +89,7 @@ def index():
 		user_score = ScoreInfo(userid=session['user_id'], score=0, name=name)
 		dbsession.add(user_score)
 		dbsession.commit()
-	return render_template('main.html', name=name, email=email, photourl=photo)
+	return render_template('main.html', name=name, email=email, photourl=session['photo'])
  
  
 @app.route('/login')
@@ -118,7 +121,7 @@ def get_access_token():
 def leaderboards():
 	scores = list(dbsession.query(ScoreInfo))
 	sort_leaderboards(scores)
-	return render_template('leaderboards.html', scores=scores)
+	return render_template('leaderboards.html', scores=scores, photourl=session['photo'])
 
 
 @app.route('/Get-highscore/<string:user_id>')
@@ -146,7 +149,7 @@ def submit_highscore():
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
-	return render_template('flappy_moshe.html', user_id=session['user_id'])#session['user_id'])
+	return render_template('flappy_moshe.html', user_id=session['user_id'], photourl=session['photo'])
 if __name__ == '__main__':
 	app.run(debug=True, threaded=True)
 

@@ -1,15 +1,14 @@
-<!doctype html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Flappy Moshe</title>
+{% extends "layout.html" %}
+{% block title %}Flappy Moshe | {% endblock %}
+  {% block head %}
     <link rel="stylesheet" href="{{url_for('static', filename='TemplateData/style.css')}}">
     <link rel="shortcut icon" href="{{url_for('static', filename='TemplateData/favicon.ico')}}" />
     <script src="{{url_for('static', filename='TemplateData/UnityProgress.js')}}"></script>
-  </head>
+    <title>Flappy Moshe | meetGames</title>
+  {% endblock %}
+  {% block body %}
   <body class="template">
-    <div class="template-wrap clear">
+    <div class="template-wrap clear" style="margin-top: 7%;">
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600em" width="960em"></canvas>
       <br>
       <div class="logo"></div>
@@ -28,15 +27,16 @@
     asmUrl: "{{url_for('static', filename='Release/Builds.asm.js')}}",
     memUrl: "{{url_for('static', filename='Release/Builds.mem')}}",
   };
-</script>
-<script src="{{url_for('static', filename='Release/UnityLoader.js')}}"></script>
-<script type="text/javascript">
+  </script>
+  <script src="{{url_for('static', filename='Release/UnityLoader.js')}}"></script>
+  <script type="text/javascript">
 
-  var id = "{{ user_id }}";//{{ user_email }};
-  function OnFinishedLoading(){
-      var id = "{{ user_id }}";//{{ user_email }};
-      SendMessage("Player", "SetUserID", id);
-  }
-</script>
-</body>
+    var id = "{{ user_id }}";//{{ user_email }};
+    function OnFinishedLoading(){
+        var id = "{{ user_id }}";//{{ user_email }};
+        SendMessage("Player", "SetUserID", id);
+    }
+  </script>
+  </body>
+  {% endblock %}
 </html>
