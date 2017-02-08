@@ -4,15 +4,17 @@
 	<table class="table">
 		<thead>
 			<tr>
+				<th>Rank</th>
 				<th>Name</th>
 				<th>Score</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for score in scores %}
+			{% for i in indexing %}
 			<tr>
-				<td><h4>{{ score.name }}</h4></td>
-				<td><h4>{{ score.score }}</h4></td>
+				<td><h4>{{ i + 1}}</h4></td>
+				<td><h4>{{ scores[i].name }}</h4></td>
+				<td><h4>{{ scores[i].score }}</h4></td>
 			</tr>
 			{% endfor %}
 		</tbody>

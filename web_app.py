@@ -121,7 +121,8 @@ def get_access_token():
 def leaderboards():
 	scores = list(dbsession.query(ScoreInfo))
 	sort_leaderboards(scores)
-	return render_template('leaderboards.html', scores=scores, photourl=session['photo'])
+	indexing = list(range(len((scores))))
+	return render_template('leaderboards.html', scores=scores, indexing=indexing, photourl=session['photo'])
 
 
 @app.route('/Get-highscore/<string:user_id>')
