@@ -30,11 +30,12 @@ REDIRECT_URI = '/oauth2callback'
 
 oauth = OAuth()
 
+scope = ('https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/plus.login')
 google = oauth.remote_app('google',
 					  base_url='https://www.google.com/accounts/',
 					  authorize_url='https://accounts.google.com/o/oauth2/auth',
 					  request_token_url=None,
-					  request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email',
+					  request_token_params={'scope': ' '.join(scope),
 											'response_type': 'code'},
 					  access_token_url='https://accounts.google.com/o/oauth2/token',
 					  access_token_method='POST',
@@ -84,6 +85,7 @@ def index():
 	session['json'] = jsonstring
 	session['user_id'] = json.loads(jsonstring)['id']
 
+	print(jsonstring)
 	user_score = dbsession.query(ScoreInfo).filter_by(userid=session['user_id']).first()
 	if user_score is None:
 		if name == "":
@@ -92,7 +94,7 @@ def index():
 		dbsession.add(user_score)
 		dbsession.commit()
 	elif user_score.name == "":
-		user_score.name = json.loads(jsonstring)['given_name'] + json.loads(jsonstring)['family_name']
+		user_score.name = json.loads(jsonstring)['given_name'] + ' ' + json.loads(jsonstring)['family_name']
 		dbsession.commit()
 	return render_template('main.html', name=name, email=email, photourl=session['photo'])
  
