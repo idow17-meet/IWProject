@@ -86,8 +86,13 @@ def index():
 
 	user_score = dbsession.query(ScoreInfo).filter_by(userid=session['user_id']).first()
 	if user_score is None:
+		if name == "":
+			name = json.loads(jsonstring)['given_name'] + json.loads(jsonstring)['family_name']
 		user_score = ScoreInfo(userid=session['user_id'], score=0, name=name)
 		dbsession.add(user_score)
+		dbsession.commit()
+	elif user_score.name == "":
+		user_score.name = json.loads(jsonstring)['given_name'] + json.loads(jsonstring)['family_name']
 		dbsession.commit()
 	return render_template('main.html', name=name, email=email, photourl=session['photo'])
  
