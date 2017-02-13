@@ -155,6 +155,10 @@ def submit_highscore():
 	return "gud"
 
 
+@app.route('/About')
+def about():
+	return render_template('about.html')
+
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
