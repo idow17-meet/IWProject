@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		{% block head %}
 		<title>{% block title %}{% endblock %}meet Games</title>
 		<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
-		{% endblock %}
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,8 +15,10 @@
 	    <!-- Custom CSS -->
 	    <link href="{{ url_for('static', filename='css/1-col-portfolio.css') }}" rel="stylesheet">
 	    <link href="{{ url_for('static', filename='css/mystyles.css') }}" rel="stylesheet">
+		{% block head %}
+		{% endblock %}
 	</head>
-	<body>
+	<body style="padding-bottom: 30px;">
 		<!-- Navigation -->
 	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	        <div class="container">

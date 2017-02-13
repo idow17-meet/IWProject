@@ -62,7 +62,7 @@ def index():
 
 	access_token = session.get('access_token')
 	if access_token is None:
-		return redirect(url_for('login'))
+		return render_template('login.html')
  
 	access_token = access_token[0]
 	from urllib2 import Request, urlopen, URLError
@@ -76,7 +76,7 @@ def index():
 		if e.code == 401:
 			# Unauthorized - bad token
 			session.pop('access_token', None)
-			return redirect(url_for('login'))
+			return render_template('login.html')
 		return res.read()
  
 	jsonstring = res.read()
@@ -98,8 +98,8 @@ def index():
 		user_score.name = (json.loads(jsonstring)['given_name'] + ' ' + json.loads(jsonstring)['family_name']).title()
 		dbsession.commit()
 	return render_template('main.html', name=name, email=email, photourl=session['photo'])
- 
- 
+
+
 @app.route('/login')
 def login():
 	callback=url_for('authorized', _external=True)
