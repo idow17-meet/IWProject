@@ -23,11 +23,14 @@ import hashlib
 #My google id:
 #103891305576825217486
 
+# 52 177 177
 #Useful:
 #sudo lsof -i :5000 | grep "python" | cut -d " " -f3 | xargs kill -9
 GOOGLE_CLIENT_ID = '606083212870-invusvesj5a2khknk813hrupq27h35k6.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = '0Wbve1W1lOrRvoUquT4SFq2k'
 REDIRECT_URI = '/oauth2callback'
+
+NOT_LOGGED = "You must be logged in to perform that action"
 
 oauth = OAuth()
 
@@ -108,6 +111,7 @@ def login():
 @app.route('/logout')
 def logout():
 	session.pop('access_token')
+	flash("Dont forget to sign out of your google account aswell!")
 	return redirect(url_for('index'))
  
  
@@ -127,6 +131,9 @@ def get_access_token():
 
 @app.route('/Leaderboards')
 def leaderboards():
+	if session.get('access_token') is None:
+		flash(NOT_LOGGED)
+		return render_template('login.html')
 	scores = list(dbsession.query(ScoreInfo))
 	sort_leaderboards(scores)
 	indexing = list(range(len((scores))))
@@ -157,11 +164,17 @@ def submit_highscore():
 
 @app.route('/About')
 def about():
+	if session.get('access_token') is None:
+		flash(NOT_LOGGED)
+		return render_template('login.html')
 	return render_template('about.html')
 
 # Games:
 @app.route('/Flappy-Moshe')
 def flappy_moshe():
+	if session.get('access_token') is None:
+		flash(NOT_LOGGED)
+		return render_template('login.html')
 	return render_template('flappy_moshe.html', user_id=session['user_id'], photourl=session['photo'])
 if __name__ == '__main__':
 	app.run(debug=True, threaded=True)

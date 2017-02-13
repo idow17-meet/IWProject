@@ -4,22 +4,33 @@
 		<title>Login | meet Games</title>
 		<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
 		<meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
-	    <meta name="description" content="">
-	    <meta name="author" content="">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
 
-	    <!-- Bootstrap Core CSS -->
-	    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+		<!-- Bootstrap Core CSS -->
+		<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 
-	    <!-- Custom CSS -->
-	    <link href="{{ url_for('static', filename='css/1-col-portfolio.css') }}" rel="stylesheet">
-	    <link href="{{ url_for('static', filename='css/mystyles.css') }}" rel="stylesheet">
+		<!-- Custom CSS -->
+		<link href="{{ url_for('static', filename='css/1-col-portfolio.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static', filename='css/mystyles.css') }}" rel="stylesheet">
 	</head>
 	<body style="padding-top: 20px;">
 		<div class="container" style="text-align: center;">
 			<div class="row" style="padding-bottom: 10px;">
 				<img src="{{ url_for('static', filename='fulllogo1.png') }}" height="100px">
+			</div>
+			<div class="row">
+				{% with messages = get_flashed_messages() %}
+					{% if messages %}
+					<ul class="flashes">
+						{% for message in messages %}
+						<div class="message_flash"><h3 style="color: #34B1B1">{{ message }}</h3></div>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				{% endwith %}
 			</div>
 			<div class="row">
 				<h3>Welcome to meet games! To enter, please <a href="{{ url_for('login') }}">sign in with google.</a></h2>
